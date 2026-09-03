@@ -1,36 +1,39 @@
+import { useState } from "react";
 import menu from "./data";
-import Dish from "./Dish";
-import Card from "./Card";
+import CategoryBar from "./CategoryBar";
+import DishList from "./DishList";
+import OrderForm from "./OrderForm";
 
 function Menu() {
-  const selectedCategory = "Main";
+  const [category, setCategory] = useState("All");
+  const [total, setTotal] = useState(0);
 
-  const filteredMenu = menu.filter(
-    (dish) => dish.category === selectedCategory
-  );
+  const shown =
+    category === "All"
+      ? menu
+      : menu.filter((dish) => dish.category === category);
 
-  if (filteredMenu.length === 0) {
-    return <p>No dishes found in this category.</p>;
+  function addToOrder(price) {
+    setTotal(total + price);
   }
 
   return (
     <section>
-      <h2>{selectedCategory} Dishes</h2>
+      <h2>Our Menu</h2>
 
-      <div className="menu">
-        {filteredMenu.map((dish) => (
-          <Card key={dish.id}>
-            <Dish
-              name={dish.name}
-              price={dish.price}
-              description={dish.description}
-              category={dish.category}
-              emoji={dish.emoji}
-              spicy={dish.spicy}
-            />
-          </Card>
-        ))}
-      </div>
+      <CategoryBar
+        selected={category}
+        onSelect={setCategory}
+      />
+
+      <DishList
+        dishes={shown}
+        onAdd={addToOrder}
+      />
+
+      <h2>Order Total: {total.toFixed(2)} ETB</h2>
+
+      <OrderForm />
     </section>
   );
 }

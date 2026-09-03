@@ -1,6 +1,16 @@
 import PropTypes from "prop-types";
+import { useState }from "react"; 
 
-function Dish({ name, price, description, category, emoji, spicy, currency = "ETB" }) {
+
+function Dish({ name, price, description, category, emoji, spicy, currency = "ETB" }, onAdd) {
+  const [count, setCount] = useState(0);
+
+  function handleAdd(){
+    setCount(count+1);
+    onAdd(price);
+  }
+
+
   return (
     <article className={`menu-item ${category.toLowerCase()}`}>
       <h3>
@@ -18,6 +28,13 @@ function Dish({ name, price, description, category, emoji, spicy, currency = "ET
       <p className="price">
         {(price * 1.15).toFixed(2)} {currency}
       </p>
+
+      <button onClick={handleAdd}>
+        Add
+      </button>
+
+      <p>Added:{count}</p>
+
     </article>
   );
 }
