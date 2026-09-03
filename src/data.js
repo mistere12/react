@@ -1,0 +1,77 @@
+const menu= [
+    {
+        id: 1,
+        name: "Buna",
+        price: 120,
+        description: "Traditional Ethiopian Coffee",
+        category: "Drink",
+        emoji: "☕",
+        spicy: false
+    },
+     {
+        id: 2,
+        name: "Shiro",
+        price: 90,
+        description: "Traditional Ethiopian chickpea stew",
+        category: "Main",
+        emoji: "🍲",
+        spicy: false
+    },
+    {
+        id: 3,
+        name: "Tibs",
+        price: 100,
+        description: "Traditional Ethiopian steak",
+        category: "Main",
+        emoji: "🥩",
+        spicy: false
+    },
+    {
+        id: 4,
+        name: "Tej",
+        price: 60,
+        description: "Traditional Ethiopian honey wine",
+        category: "Drink",
+        emoji: "🍹",
+        spicy: false
+    },
+    {
+        id: 5,
+        name: "Agelgel",
+        price: 150,
+        description: "Traditional Ethiopian combo",
+        category: "Main",
+        emoji:"🥮",
+        spicy: true
+    },
+    {
+        id: 6,
+        name: "Tella",
+        price: 40,
+        description: "Traditional Ethiopian beverage",
+        category: "Drink",
+        emoji: "🍷",
+        spicy: false
+    },
+    {
+        id: 7,
+        name: "Kitfo",
+        price: 120,
+        description: "Traditional Ethiopian spiced meat dish",
+        category: "Main",
+        emoji: "🥩",
+        spicy: false
+    },
+    {
+        id: 8,
+        name: "Genfo",
+        price: 80,
+        description: "Traditional flavoured porridge",
+        category: "Breakfast",
+        emoji: "🍵",
+        spicy: false
+    },
+
+];
+
+export default menu;

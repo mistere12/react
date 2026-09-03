@@ -116,3 +116,12 @@ footer {
 .category.main {
   color: #f0852d;
 }
+
+
+.card {
+  height: 100%;
+}
+
+.spicy {
+  font-weight: bold;
+}
