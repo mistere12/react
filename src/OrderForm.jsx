@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect, useRef } from "react";
 
 function OrderForm() {
   const [form, setForm] = useState({
@@ -24,6 +25,12 @@ function OrderForm() {
 
   const validPhone = /^(?:\+251|0)9\d{8}$/.test(form.phone);
 
+  const phoneRef = useRef(null);
+
+  useEffect(() => {
+    phoneRef.current.focus();
+  }, []);
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Delivery Information</h2>
@@ -31,6 +38,7 @@ function OrderForm() {
       <label>
         Name
         <input
+          ref={phoneRef}
           name="name"
           value={form.name}
           onChange={handleChange}
