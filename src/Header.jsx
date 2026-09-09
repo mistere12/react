@@ -1,10 +1,16 @@
-const restaurantName = "Addis Cafe";
+// const restaurantName = "Addis Cafe";
+import { useContext } from "react";
+import { CartContext } from "./cart/CartContext";
 
-export function Header(){
+function Header(){
+    const{items}= useContext(CartContext);
     return(
         <header>
-            <h1>{restaurantName}</h1>
+            <h1>Addis Eats</h1>
             <p>Fresh Ethiopian Food & Coffee</p>
+
+            <p>Cart: {items.length}</p>
         </header>
     );
 }
+export default Header;

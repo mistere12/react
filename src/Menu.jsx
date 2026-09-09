@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import CategoryBar from "./CategoryBar";
 import DishList from "./DishList";
 import OrderForm from "./OrderForm";
-import { loadDishes } from "./api";
+//import { loadDishes } from "./api";
 import {useRef } from "react";
+import {useContext, useMemo, useCallback} from "react";
+import { useFetch } from "./hooks/useFetch";
+import { CartContext } from "./cart/CartContext";
 
 function Menu() {
   const [category, setCategory] = useState("All");
-  const [dishes, setDishes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [total, setTotal] = useState(0);
+  // const [dishes, setDishes] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  // const [total, setTotal] = useState(0);
 
   const searchRef = useRef(null)
 
@@ -18,39 +21,64 @@ function Menu() {
   // searchRef.current.focus();
   // }, []);
 
+  const {data, loading, error} = useFetch("/dishes.json");
+
+  const { dispatch, total } = useContext(CartContext);
+
+
   useEffect(() => {
     if (!loading && searchRef.current) {
       searchRef.current.focus();
     }
   }, [loading]);
 
-  useEffect(() => {
-    const controller = new AbortController();
+    const shown = useMemo(() => {
+      const dishes = data ?? [];
 
-    async function load() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const data = await loadDishes(category, controller.signal);
-        setDishes(data);
-      } catch (e) {
-        if (e.name !== "AbortError") {
-          setError(e.message);
-        }
-      } finally {
-        setLoading(false);
+      if (category === "All") {
+        return dishes;
       }
-    }
 
-    load();
+      return dishes.filter(
+        (dish) => dish.category === category
+      );
+   }, [data, category]);                         //
 
-    return () => controller.abort();
-  }, [category]);
 
-  function addToOrder(price) {
-    setTotal(total + price);
-  }
+  // useEffect(() => {
+  //   const controller = new AbortController();
+
+  //   async function load() {
+  //     setLoading(true);
+  //     setError(null);
+
+  //     try {
+  //       const data = await loadDishes(category, controller.signal);
+  //       setDishes(data);
+  //     } catch (e) {
+  //       if (e.name !== "AbortError") {
+  //         setError(e.message);
+  //       }
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+
+  //   load();
+
+  //   return () => controller.abort();
+  // }, [category]);
+
+  // // function addToOrder(price) {
+  // //   setTotal(total + price);
+  // // }
+
+  const addToOrder = useCallback((dish) => {
+    dispatch({
+      type: "add",
+      dish
+    });
+  }, [dispatch]);
 
   if (loading) {
     return <p>Loading the menu...</p>;
@@ -77,8 +105,9 @@ function Menu() {
         onSelect={setCategory}
       />
 
+
       <DishList
-        dishes={dishes}
+        dishes={shown}   //
         onAdd={addToOrder}
       />
 

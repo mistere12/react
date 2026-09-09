@@ -18,7 +18,7 @@ function DishList({ dishes, onAdd }) {
             category={dish.category}
             emoji={dish.emoji}
             spicy={dish.spicy}
-            onAdd={onAdd}
+            onAdd={()=>onAdd(dish)}    //
           />
         </Card>
       ))}

@@ -2,13 +2,13 @@ import PropTypes from "prop-types";
 import { useState }from "react"; 
 
 
-function Dish({ name, price, description, category, emoji, spicy, currency = "ETB" }, onAdd) {
-  const [count, setCount] = useState(0);
+function Dish({ name, price, description, category, emoji, spicy, currency = "ETB", onAdd}) {
+  // const [count, setCount] = useState(0);
 
-  function handleAdd(){
-    setCount(count+1);
-    onAdd(price);
-  }
+  // function handleAdd(){
+  //   setCount(count+1);
+  //   onAdd(price);
+  // }
 
 
   return (
@@ -29,11 +29,11 @@ function Dish({ name, price, description, category, emoji, spicy, currency = "ET
         {(price * 1.15).toFixed(2)} {currency}
       </p>
 
-      <button onClick={handleAdd}>
+      <button onClick={onAdd}>
         Add
       </button>
 
-      <p>Added:{count}</p>
+      {/* <p>Added:{count}</p> */}
 
     </article>
   );
@@ -46,7 +46,8 @@ Dish.propTypes = {
   category: PropTypes.string.isRequired,
   emoji: PropTypes.string.isRequired,
   spicy: PropTypes.bool,
-  currency: PropTypes.string
+  currency: PropTypes.string,
+  onAdd: PropTypes.func.isRequired
 };
 
 export default Dish;
