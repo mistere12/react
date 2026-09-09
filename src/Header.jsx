@@ -9,7 +9,6 @@ function Header(){
             <h1>Addis Eats</h1>
             <p>Fresh Ethiopian Food & Coffee</p>
 
-            <p>Cart: {items.length}</p>
         </header>
     );
 }

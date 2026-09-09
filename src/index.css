@@ -167,3 +167,17 @@ form button {
   color: red;
   font-weight: bold;
 }
+
+nav {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+nav a.on {
+  font-weight: bold;
+}

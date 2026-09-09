@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
 import Dish from "./Dish";
 import Card from "./Card";
 
@@ -18,8 +20,12 @@ function DishList({ dishes, onAdd }) {
             category={dish.category}
             emoji={dish.emoji}
             spicy={dish.spicy}
-            onAdd={()=>onAdd(dish)}    //
+            onAdd={() => onAdd(dish)}
           />
+
+          <Link to={`/menu/${dish.id}`}>
+            View Details
+          </Link>
         </Card>
       ))}
     </div>

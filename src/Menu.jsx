@@ -1,30 +1,34 @@
-import { useEffect, useState} from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef
+} from "react";
+
+import { useSearchParams } from "react-router-dom";
+
 import CategoryBar from "./CategoryBar";
 import DishList from "./DishList";
-import OrderForm from "./OrderForm";
-//import { loadDishes } from "./api";
-import {useRef } from "react";
-import {useContext, useMemo, useCallback} from "react";
+//import OrderForm from "./OrderForm";
+
 import { useFetch } from "./hooks/useFetch";
 import { CartContext } from "./cart/CartContext";
 
 function Menu() {
-  const [category, setCategory] = useState("All");
-  // const [dishes, setDishes] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const [total, setTotal] = useState(0);
+  const [params, setParams] = useSearchParams();
 
-  const searchRef = useRef(null)
+  const category = params.get("category") ?? "All";
 
-  // useEffect(() => {
-  // searchRef.current.focus();
-  // }, []);
+  const searchRef = useRef(null);
 
-  const {data, loading, error} = useFetch("/dishes.json");
+  const {
+    data,
+    loading,
+    error
+  } = useFetch("/dishes.json");
 
   const { dispatch, total } = useContext(CartContext);
-
 
   useEffect(() => {
     if (!loading && searchRef.current) {
@@ -32,53 +36,40 @@ function Menu() {
     }
   }, [loading]);
 
-    const shown = useMemo(() => {
-      const dishes = data ?? [];
+  const shown = useMemo(() => {
+    const dishes = data ?? [];
 
-      if (category === "All") {
-        return dishes;
+    if (category === "All") {
+      return dishes;
+    }
+
+    return dishes.filter(
+      (dish) => dish.category === category
+    );
+  }, [data, category]);
+
+  const chooseCategory = useCallback(
+    (newCategory) => {
+      if (newCategory === "All") {
+        setParams({});
+      } else {
+        setParams({
+          category: newCategory
+        });
       }
+    },
+    [setParams]
+  );
 
-      return dishes.filter(
-        (dish) => dish.category === category
-      );
-   }, [data, category]);                         //
-
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-
-  //   async function load() {
-  //     setLoading(true);
-  //     setError(null);
-
-  //     try {
-  //       const data = await loadDishes(category, controller.signal);
-  //       setDishes(data);
-  //     } catch (e) {
-  //       if (e.name !== "AbortError") {
-  //         setError(e.message);
-  //       }
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   load();
-
-  //   return () => controller.abort();
-  // }, [category]);
-
-  // // function addToOrder(price) {
-  // //   setTotal(total + price);
-  // // }
-
-  const addToOrder = useCallback((dish) => {
-    dispatch({
-      type: "add",
-      dish
-    });
-  }, [dispatch]);
+  const addToOrder = useCallback(
+    (dish) => {
+      dispatch({
+        type: "add",
+        dish
+      });
+    },
+    [dispatch]
+  );
 
   if (loading) {
     return <p>Loading the menu...</p>;
@@ -87,7 +78,6 @@ function Menu() {
   if (error) {
     return <p className="err">{error}</p>;
   }
-
 
   return (
     <section>
@@ -99,21 +89,21 @@ function Menu() {
         placeholder="Search dishes..."
       />
 
-
       <CategoryBar
         selected={category}
-        onSelect={setCategory}
+        onSelect={chooseCategory}
       />
 
-
       <DishList
-        dishes={shown}   //
+        dishes={shown}
         onAdd={addToOrder}
       />
 
-      <h2>Order Total: {total.toFixed(2)} ETB</h2>
+      <h2>
+        Order Total: {total.toFixed(2)} ETB
+      </h2>
 
-      <OrderForm />
+      {/* <OrderForm /> */}
     </section>
   );
 }
