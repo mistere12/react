@@ -1,6 +1,5 @@
 import {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef
@@ -13,7 +12,8 @@ import DishList from "./DishList";
 //import OrderForm from "./OrderForm";
 
 import { useFetch } from "./hooks/useFetch";
-import { CartContext } from "./cart/CartContext";
+
+import { useCartStore } from "./cart/cartStore";
 
 function Menu() {
   const [params, setParams] = useSearchParams();
@@ -28,7 +28,17 @@ function Menu() {
     error
   } = useFetch("/dishes.json");
 
-  const { dispatch, total } = useContext(CartContext);
+  const addItem = useCartStore(
+      (state) => state.addItem
+    );
+
+  const total = useCartStore(
+      (state) =>
+        state.items.reduce(
+          (sum, dish) => sum + dish.price,
+          0
+        )
+    );
 
   useEffect(() => {
     if (!loading && searchRef.current) {
@@ -63,12 +73,7 @@ function Menu() {
 
   const addToOrder = useCallback(
     (dish) => {
-      dispatch({
-        type: "add",
-        dish
-      });
-    },
-    [dispatch]
+      addItem(dish);},[addItem]
   );
 
   if (loading) {

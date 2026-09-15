@@ -1,9 +1,7 @@
-// const restaurantName = "Addis Cafe";
-import { useContext } from "react";
-import { CartContext } from "./cart/CartContext";
+import {Link} from "react-router-dom";
 
 function Header(){
-    const{items}= useContext(CartContext);
+  
     return(
         <header>
             <h1>Addis Eats</h1>

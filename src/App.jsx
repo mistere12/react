@@ -9,13 +9,13 @@ import Checkout from "./Checkout";
 import Login from "./Login";
 import NotFound from "./NotFound";
 
-import { CartProvider } from "./cart/CartProvider";
+
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 
 function App() {
   return (
-    <CartProvider>
+    
       <BrowserRouter>
         <AuthProvider>
           <Routes>
@@ -52,7 +52,7 @@ function App() {
           </Routes>
         </AuthProvider>
       </BrowserRouter>
-    </CartProvider>
+    
   );
 }
 

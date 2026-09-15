@@ -1,16 +1,40 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { CartContext } from "./cart/CartContext";
+import { useCartStore } from "./cart/cartStore";
 
 function Cart() {
-  const { items, dispatch, total } = useContext(CartContext);
+  const items =
+    useCartStore(
+      (state) => state.items
+    );
+
+  const remove =
+    useCartStore(
+      (state) => state.remove
+    );
+
+  const clear =
+    useCartStore(
+      (state) => state.clear
+    );
+
+  const total =
+    useCartStore(
+      (state) =>
+        state.items.reduce(
+          (sum, dish) =>
+            sum + dish.price,
+          0
+        )
+    );
 
   if (items.length === 0) {
     return (
       <section>
         <h2>Your Cart</h2>
 
-        <p>Your cart is empty.</p>
+        <p>
+          Your cart is empty.
+        </p>
 
         <Link to="/menu">
           Browse Menu
@@ -24,7 +48,9 @@ function Cart() {
       <h2>Your Cart</h2>
 
       {items.map((dish, index) => (
-        <article key={`${dish.id}-${index}`}>
+        <article
+          key={`${dish.id}-${index}`}
+        >
           <h3>
             {dish.name} {dish.emoji}
           </h3>
@@ -35,10 +61,7 @@ function Cart() {
 
           <button
             onClick={() =>
-              dispatch({
-                type: "remove",
-                id: dish.id
-              })
+              remove(dish.id)
             }
           >
             Remove
@@ -47,16 +70,11 @@ function Cart() {
       ))}
 
       <h2>
-        Total: {total.toFixed(2)} ETB
+        Total:{" "}
+        {total.toFixed(2)} ETB
       </h2>
 
-      <button
-        onClick={() =>
-          dispatch({
-            type: "clear"
-          })
-        }
-      >
+      <button onClick={clear}>
         Clear Cart
       </button>
 

@@ -1,5 +1,4 @@
 import {
-  useContext,
   useState
 } from "react";
 
@@ -8,7 +7,7 @@ import {
   useNavigate
 } from "react-router-dom";
 
-import { AuthContext } from "./auth/AuthContext";
+import { useAuth } from "./auth/useAuth";
 
 function Login() {
   const [phone, setPhone] = useState("");
@@ -16,7 +15,7 @@ function Login() {
   const {
     login,
     loading
-  } = useContext(AuthContext);
+  } = useAuth;
 
   const navigate = useNavigate();
   const location = useLocation();

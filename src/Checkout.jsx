@@ -1,8 +1,7 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { AuthContext } from "./auth/AuthContext";
-import { CartContext } from "./cart/CartContext";
+import { useCartStore } from "./cart/cartStore";
 
 function Checkout() {
   const [form, setForm] = useState({
@@ -13,8 +12,23 @@ function Checkout() {
 
   const phoneRef = useRef(null);
 
-  const { user } = useContext(AuthContext);
-  const { items, total, dispatch } = useContext(CartContext);
+  const items = useCartStore(
+      (state) => state.items
+    );
+
+  const total = useCartStore(
+      (state) =>
+        state.items.reduce(
+          (sum, dish) =>
+            sum + dish.price,
+          0
+        )
+    );
+
+  const clear = useCartStore(
+      (state) => state.clear
+    );
+
 
   const navigate = useNavigate();
 
@@ -36,9 +50,7 @@ function Checkout() {
 
     alert(`Order for ${form.name} submitted!`);
 
-    dispatch({
-      type: "clear"
-    });
+    clear();
 
     navigate("/menu", {
       replace: true
@@ -53,6 +65,8 @@ function Checkout() {
         <h2>Checkout</h2>
 
         <p>Your cart is empty.</p>
+
+        <Link to="/menu"> Browse Menu </Link>
       </section>
     );
   }
@@ -126,5 +140,14 @@ function Checkout() {
     </section>
   );
 }
+
+function LinkToMenu() {
+  return (
+    <a href="/menu">
+      Browse Menu
+    </a>
+  );
+}
+
 
 export default Checkout;
