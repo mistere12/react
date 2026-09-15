@@ -15,7 +15,7 @@ function Login() {
   const {
     login,
     loading
-  } = useAuth;
+  } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
