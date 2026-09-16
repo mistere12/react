@@ -16,6 +16,7 @@ import { useFetch } from "./hooks/useFetch";
 import { useCartStore } from "./cart/cartStore";
 
 function Menu() {
+  //throw new Error("Test Menu Error");
   const [params, setParams] = useSearchParams();
 
   const category = params.get("category") ?? "All";

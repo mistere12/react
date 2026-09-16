@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState }from "react"; 
+import { memo }from "react"; 
 
 
 function Dish({ name, price, description, category, emoji, spicy, currency = "ETB", onAdd}) {
@@ -50,4 +50,4 @@ Dish.propTypes = {
   onAdd: PropTypes.func.isRequired
 };
 
-export default Dish;
+export default memo(Dish);
